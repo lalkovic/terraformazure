@@ -1,0 +1,63 @@
+terraform apply -var-file "vars.tfvars" -var "server=web" -auto-approve
+
+terraform graph # builds dependancy tree. paste output into https://dreampuf.github.io/GraphvizOnline/ for visual representation
+
+#importing existing resource into terraform
+# it must exist in Azure and we need to have it defined in our code. then import using terraform import function
+# terraform import resource_type.resource_name resource_id
+terraform import azurerm_storage_account.storage_account /subscriptions/10268763-3246-4eba-8b84-6da23d4c6ab7/resourceGroups/training_terraformazure_tutorial_rg/providers/Microsoft.Storage/storageAccounts/ltfbootdiagnosticslalk
+
+functions
+string manipulation, math, data, formatting
+neywork, cryptography, encoding
+now = timestamp()
+server = "${var.web_server_name}-${format("%02d", count.index)}"
+upper = upper("something_lowercase")
+
+Interpolation syntax "${}"
+name                = var.resource_prefix
+count_string        = format("%02d", count.index)
+another_name        = "${var.resource_prefix}-rg"
+server_name         = "${var.web_server_name}-${format("%02d", count.index)}"
+resource_group_name = azurerm_resource_group.web_server_rg.name
+data_name           = data.azurerm_resource_group.web_server_rg_data.name
+
+
+# list available azure locations
+az account list-locations -o table
+#show account info
+az account show
+az login
+az logout
+
+# VM images list
+# list vm images available in table format
+az vm image list --output table
+# list publishers
+az vm image list-publishers -l canadacentral -o table
+# list offers from specific publishers
+az vm image list-offers -l canadacentral -p RedHat -o table
+
+# VM hardware list
+az vm list-sizes -l canadacentral -o table
+
+look at CIDR - what is it
+ipaddressguide.com
+
+
+#logging and troubleshooting
+# set env variables
+TF_LOG=TRACE, DEBUG, INFO, WARN, ERROR
+TF_LOG_PATH
+in case of crash, terraform creates crash.log
+
+#scale set - allows for dynamically scaling deployment by schedule or load. crete a groop of identical VMs
+# we can create demand based autoscale
+# they also allow updates while preserving resources
+
+#load balancer - external access
+
+# vm extensions - bootstrap VM creation - run code after it is built
+# like a small application
+
+#existing ressources - how to bring them in to 
